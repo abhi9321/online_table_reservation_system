@@ -1,6 +1,8 @@
 import datetime
 
 from app import db, ma
+DEFAULT_RESERVATION_LENGTH = 1 # 1 hour
+MAX_TABLE_CAPACITY = 6
 
 
 class Restaurant(db.Model):
@@ -31,9 +33,10 @@ class Table(db.Model):
 
 class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(64), index=True, unique=True)
-    email = db.Column(db.String(120), index=True, unique=True)
-    password_hash = db.Column(db.String(128))
+    name = db.Column(db.String(64), index=True)
+    # email = db.Column(db.String(120), index=True, unique=True)
+    phone_number = db.Column(db.String(64), index=True, unique=True)
+    # password_hash = db.Column(db.String(128))
 
     def __repr__(self):
         return '<User {}>'.format(self.name)
@@ -42,9 +45,13 @@ class User(db.Model):
 class Reservation(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     restaurant_id = db.Column(db.Integer, db.ForeignKey('restaurant.id'))
+    restaurant = db.relationship('Restaurant')
     table_id = db.Column(db.Integer, db.ForeignKey('table.id'))
+    table = db.relationship('Table')
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
-    check_in = db.Column(db.DateTime, index=True, default=datetime)
+    user = db.relationship('User')
+    num_guests = db.Column(db.Integer, index=True)
+    reservation_time = db.Column(db.DateTime, index=True, default=datetime)
 
     def __repr__(self):
         return '<Reservation {}>'.format(self.id)
@@ -58,3 +65,8 @@ class Menu(db.Model):
 
     def __repr__(self):
         return '<dish {}>'.format(self.dish)
+
+
+
+
+
