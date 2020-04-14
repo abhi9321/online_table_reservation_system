@@ -1,7 +1,8 @@
 from flask import request, jsonify
 from app import app
-from app.models import Restaurant, RestaurantSchema, Table, User, Reservation
+from app.models import Restaurant, RestaurantSchema, Table, User, Reservation, Menu, MenuSchema
 from app.controller import create_reservation
+
 
 @app.route('/')
 @app.route('/index')
@@ -21,6 +22,7 @@ def get_restaurant(res_id=None):
     response = {'status': 'success', 'details': output}
     return jsonify(response)
 
+
 @app.route('/v1/make_reservation', methods=['GET', 'POST'])
 def make_reservation():
     data_set = request.get_json()
@@ -32,3 +34,15 @@ def make_reservation():
 def register_user():
     data_set = request.get_json()
     print(data_set)
+
+
+@app.route('/v1/get_menu/<res_id>', methods=['GET'])
+def get_menu(res_id=None):
+    if res_id:
+        res = Menu.query.filter_by(restaurant_id=res_id)
+    else:
+        res = Menu.query.all()
+    res_schema = MenuSchema(many=True)
+    output = res_schema.dump(res)
+    response = {'status': 'success', 'details': output}
+    return jsonify(response)

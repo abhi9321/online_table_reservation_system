@@ -9,7 +9,7 @@ app = Flask(__name__)
 app.config.from_object(Config)
 db = SQLAlchemy(app)
 ma = Marshmallow(app)
-
+app.config.from_object(Config)
 migrate = Migrate(app, db)
 
 from app import routes, models

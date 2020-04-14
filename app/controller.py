@@ -1,8 +1,25 @@
 from app.models import Restaurant, RestaurantSchema, Table, User, Reservation
+from app.mail_util import send_mail
 from app import app, db
 import datetime
+import app
 
+config = app.Config()
 DEFAULT_RESERVATION_LENGTH = 1  # 1 hour
+
+
+def notify(response):
+    print(response['details']['email'])
+    message = """ Hi """ + str(response['details']['user_name']) + """,\n\n Reservation confirmed for """ + \
+              str(response['details']['reservation_datetime']) + """."""
+
+    data = {'from': config.sender_email_id,
+            'sender_email_id_password': config.sender_email_id_password,
+            'to': 'agopalaiah@quotient.com',
+            'subject': 'Reservation successful',
+            'message': message}
+    print(data)
+    send_mail(**data)
 
 
 def create_reservation(data):
@@ -10,7 +27,7 @@ def create_reservation(data):
     user = User.query.filter_by(phone_number=data.get('phone_number')).first()
     if user is None:
         print('user not present')
-        user = User(name=data.get('user_name'), phone_number=data.get('phone_number'))
+        user = User(name=data.get('user_name'), phone_number=data.get('phone_number'), email=data.get('email'))
         db.session.add(user)
 
     # now check table availability
@@ -75,5 +92,9 @@ def create_reservation(data):
 
     db.session.add(reservation)
     db.session.commit()
+
     response.update({'message': f'reservation successful', 'details': data})
+    print(response)
+    if response['status'] == 'success':
+        notify(response)
     return response
