@@ -10,8 +10,8 @@ class Restaurant(db.Model):
     address = db.Column(db.String(225))
     amount_per_person = db.Column(db.Integer)
 
-    # def __repr__(self):
-    #     return f'{self.id}, {self.name}'
+    def __repr__(self):
+        return f'{self.id}, {self.name}'
 
 
 class RestaurantSchema(ma.Schema):
