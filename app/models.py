@@ -1,7 +1,8 @@
 import datetime
 
 from app import db, ma
-DEFAULT_RESERVATION_LENGTH = 1 # 1 hour
+
+DEFAULT_RESERVATION_LENGTH = 1  # 1 hour
 
 
 class Restaurant(db.Model):
@@ -35,7 +36,6 @@ class User(db.Model):
     name = db.Column(db.String(64), index=True)
     email = db.Column(db.String(120), index=True, unique=True)
     phone_number = db.Column(db.String(64), index=True, unique=True)
-    # password_hash = db.Column(db.String(128))
 
     def __repr__(self):
         return '<User {}>'.format(self.name)
@@ -65,9 +65,7 @@ class Menu(db.Model):
     def __repr__(self):
         return '<dish {}>'.format(self.dish)
 
+
 class MenuSchema(ma.Schema):
     class Meta:
         fields = ('id', 'dish', 'cost')
-
-
-
