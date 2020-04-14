@@ -1,6 +1,7 @@
 import datetime
 
-from app import db
+from app import db, ma
+
 
 class Restaurant(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -9,8 +10,15 @@ class Restaurant(db.Model):
     address = db.Column(db.String(225))
     amount_per_person = db.Column(db.Integer)
 
-    def __repr__(self):
-        return '<name {}>'.format(self.name)
+    # def __repr__(self):
+    #     return f'{self.id}, {self.name}'
+
+
+class RestaurantSchema(ma.Schema):
+    class Meta:
+        fields = ('id', 'name', 'phone', 'address', 'amount_per_person')
+        # model = Restaurant
+
 
 class Table(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -19,6 +27,7 @@ class Table(db.Model):
 
     def __repr__(self):
         return '<Table id {}>'.format(self.id)
+
 
 class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -40,6 +49,7 @@ class Reservation(db.Model):
     def __repr__(self):
         return '<Reservation {}>'.format(self.id)
 
+
 class Menu(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     dish = db.Column(db.String(64), index=True, unique=True)
@@ -48,4 +58,3 @@ class Menu(db.Model):
 
     def __repr__(self):
         return '<dish {}>'.format(self.dish)
-
