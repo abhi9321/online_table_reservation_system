@@ -26,9 +26,8 @@ API:
 ---
 - get restaurants:
 ```
-curl --location --request GET 'http://127.0.0.1:5000/v1/get_restaurant/1' \
---header 'Content-Type: application/json' \
---data-raw '{"user_name":"abhishek","phone_number":"9912345678","num_guest":"4","restaurant_id":"1","reservation_datetime": "2020-04-15 05:00:00"}'
+curl --location --request GET 'http://127.0.0.1:5000/v1/get_restaurant/'
+curl --location --request GET 'http://127.0.0.1:5000/v1/get_restaurant/1'
 ```
 
 - update reservation
