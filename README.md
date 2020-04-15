@@ -33,11 +33,10 @@ curl --location --request GET 'http://127.0.0.1:5000/v1/get_restaurant/1' \
 
 - update reservation
 ```
-curl --location --request GET 'http://127.0.0.1:5000/v1/make_reservation' \
+curl --location --request POST 'http://127.0.0.1:5000/v1/make_reservation' \
 --header 'Content-Type: application/json' \
 --data-raw '{"user_name":"abhishek","phone_number":"9912345678","email":"abhishek@gmail.com","num_guest":"4","restaurant_id":"1","reservation_datetime": "2020-04-16 03:00:00"}'
 ```
-
 
 - get menu
 ```
