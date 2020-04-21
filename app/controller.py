@@ -9,7 +9,7 @@ DEFAULT_RESERVATION_LENGTH = 1  # 1 hour
 
 
 def notify(response):
-    print(response['details']['email'])
+    # print(response['details']['email'])
     message = """ Hi """ + str(response['details']['user_name']) + """,\n\n Reservation confirmed for """ + \
               str(response['details']['reservation_datetime']) + """."""
 
@@ -24,6 +24,10 @@ def notify(response):
 
 def create_reservation(data):
     response = {'status': 'success'}
+    reservation_time = datetime.datetime.strptime(data.get('reservation_datetime'), '%Y-%m-%d %H:%M:%S')
+    if datetime.datetime.now() > reservation_time:
+        response.update({'status': 'error', 'message': f'cannot book for date {reservation_time}'})
+        return response
     user = User.query.filter_by(phone_number=data.get('phone_number')).first()
     if user is None:
         print('user not present')
@@ -44,8 +48,6 @@ def create_reservation(data):
         response.update({'status': 'error', 'message': f'no tables available for the capacity : {capacity}'})
         return response
 
-    reservation_time = datetime.datetime.strptime(data.get('reservation_datetime'), '%Y-%m-%d %H:%M:%S')
-
     # check reservations
     begin_range = reservation_time - datetime.timedelta(hours=DEFAULT_RESERVATION_LENGTH)
     end_range = reservation_time + datetime.timedelta(hours=DEFAULT_RESERVATION_LENGTH)
@@ -64,7 +66,7 @@ def create_reservation(data):
             # still add guest
             print(f'not available')
             db.session.commit()
-            response.update({'status': 'error', 'message': f' tables not available for given time'})
+            response.update({'status': 'error', 'message': f'tables not available for given time'})
             return response
         else:
             # get available table
@@ -96,5 +98,6 @@ def create_reservation(data):
     response.update({'message': f'reservation successful', 'details': data})
     print(response)
     if response['status'] == 'success':
-        notify(response)
+        pass
+        # notify(response)
     return response

@@ -30,13 +30,14 @@ def make_reservation():
     return jsonify(reservation)
 
 
-@app.route('/v1/register_user/', methods=['GET', 'POST'])
-def register_user():
-    data_set = request.get_json()
-    print(data_set)
+# @app.route('/v1/register_user/', methods=['GET', 'POST'])
+# def register_user():
+#     data_set = request.get_json()
+#     print(data_set)
 
 
 @app.route('/v1/get_menu/<res_id>', methods=['GET'])
+@app.route('/v1/get_menu/', methods=['GET'])
 def get_menu(res_id=None):
     if res_id:
         res = Menu.query.filter_by(restaurant_id=res_id)
