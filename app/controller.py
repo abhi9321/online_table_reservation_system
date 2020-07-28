@@ -15,7 +15,7 @@ def notify(response):
 
     data = {'from': config.sender_email_id,
             'sender_email_id_password': config.sender_email_id_password,
-            'to': 'agopalaiah@quotient.com',
+            'to': 'abhishek@gmail.com',
             'subject': 'Reservation successful',
             'message': message}
     print(data)
